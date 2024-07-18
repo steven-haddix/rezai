@@ -1,0 +1,79 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./deploy/Dockerfile
+      target: prod
+    image: rezai:${REZAI_VERSION:-latest}
+    restart: always
+    env_file:
+    - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      REZAI_HOST: 0.0.0.0
+      REZAI_DB_HOST: rezai-db
+      REZAI_DB_PORT: 5432
+      REZAI_DB_USER: rezai
+      REZAI_DB_PASS: rezai
+      REZAI_DB_BASE: rezai
+      REZAI_REDIS_HOST: rezai-redis
+
+  db:
+    image: postgres:16.3
+    hostname: rezai-db
+    environment:
+      POSTGRES_PASSWORD: "rezai"
+      POSTGRES_USER: "rezai"
+      POSTGRES_DB: "rezai"
+    volumes:
+    - rezai-db-data:/var/lib/postgresql/data
+    restart: always
+    ports:
+    - "5432:5432"
+    healthcheck:
+      test: pg_isready -U rezai
+      interval: 2s
+      timeout: 3s
+      retries: 40
+
+  migrator:
+    image: rezai:${REZAI_VERSION:-latest}
+    restart: "no"
+    command: alembic upgrade head
+    env_file:
+    - .env
+    environment:
+      REZAI_DB_HOST: rezai-db
+      REZAI_DB_PORT: 5432
+      REZAI_DB_USER: rezai
+      REZAI_DB_PASS: rezai
+      REZAI_DB_BASE: rezai
+    depends_on:
+      db:
+        condition: service_healthy
+
+  redis:
+    image: bitnami/redis:7.2
+    hostname: "rezai-redis"
+    restart: always
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+    - "6379:6379"
+    healthcheck:
+      test: redis-cli ping
+      interval: 1s
+      timeout: 3s
+      retries: 50
+
+
+
+volumes:
+  rezai-db-data:
+    name: rezai-db-data
