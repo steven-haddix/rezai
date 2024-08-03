@@ -62,9 +62,13 @@ class GunicornApplication(BaseApplication):
         gunicorn can handle. If you pass unknown
         parameter to it, it crash with error.
         """
-        for key, value in self.options.items():
-            if key in self.cfg.settings and value is not None:
-                self.cfg.set(key.lower(), value)
+        if self.cfg is not None:
+            for key, value in self.options.items():
+                if key in self.cfg.settings and value is not None:
+                    self.cfg.set(key.lower(), value)
+        else:
+            # Handle the case where self.cfg is None
+            print("Warning: self.cfg is None. Cannot set options.")
 
     def load(self) -> str:
         """

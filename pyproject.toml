@@ -11,7 +11,7 @@ maintainers = [
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.9.7 || >3.9.7,<4.0"
 fastapi = "^0.100.0"
 uvicorn = { version = "^0.22.0", extras = ["standard"] }
 gunicorn = "^21.2.0"
@@ -35,12 +35,12 @@ tavily-python = "^0.3.3"
 langchain-community = "^0.2.7"
 importlib_metadata = "^4.0.0"
 setuptools = "^71.0.1"
+streamlit = "^1.37.0"
 
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.2.1"
 flake8 = "~7"
-mypy = "^1.1.1"
 isort = "^5.11.4"
 pre-commit = "^3.0.1"
 wemake-python-styleguide = "^0.19.0"
@@ -52,6 +52,9 @@ pytest-env = "^0.8.1"
 fakeredis = "^2.5.0"
 httpx = "^0.23.3"
 setuptools = "^71.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pyright = "^1.1.374"
 
 [tool.isort]
 profile = "black"

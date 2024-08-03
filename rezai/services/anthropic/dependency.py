@@ -2,14 +2,16 @@ from typing import AsyncGenerator
 
 from anthropic import Client
 
+from rezai.services.anthropic.service import AnthropicService
 from rezai.settings import settings
 
 
-async def get_anthropic_client() -> AsyncGenerator[Client, None]:
+async def get_anthropic_service() -> AsyncGenerator[AnthropicService, None]:
     """
-    Dependency function to get the Anthropic client.
+    Dependency function to get the Anthropic service.
 
-    :yield: Anthropic client.
+    :yield: Anthropic service.
     """
     client = Client(api_key=settings.anthropic_api_key)
-    yield client
+    service = AnthropicService(client)
+    yield service

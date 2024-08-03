@@ -6,11 +6,13 @@ extend-ignore = E203
 docstring_style=sphinx
 
 ignore =
+  E501,
   D101,
   D102,
   C901,
   WPS211,
   WPS432,
+  WPS210,
   ; Found `f` string
   WPS305,
   ; Missing docstring in public module

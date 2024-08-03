@@ -35,7 +35,7 @@ async def test_setting_value(
     assert response.status_code == status.HTTP_200_OK
     async with Redis(connection_pool=fake_redis_pool) as redis:
         actual_value = await redis.get(test_key)
-    assert actual_value.decode() == test_val
+    assert actual_value == test_val
 
 
 @pytest.mark.anyio

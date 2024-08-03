@@ -22,6 +22,8 @@ async def get_redis_value(
     """
     async with Redis(connection_pool=redis_pool) as redis:
         redis_value = await redis.get(key)
+    if redis_value is not None:
+        redis_value = redis_value.decode("utf-8")
     return RedisValueDTO(
         key=key,
         value=redis_value,

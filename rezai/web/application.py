@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.responses import UJSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from rezai.logging import configure_logging
+from rezai.logger import configure_logging
 from rezai.web.api.router import api_router
 from rezai.web.lifetime import register_shutdown_event, register_startup_event
 

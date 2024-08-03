@@ -60,6 +60,9 @@ class Settings(BaseSettings):
     openai_api_key: str = ""
     langsmith_api_key: str = ""
 
+    valueserp_api_key: str = ""
+    youcom_api_key: str = ""
+
     @property
     def db_url(self) -> URL:
         """

@@ -1,9 +1,9 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
-from sqlalchemy.sql.sqltypes import DateTime, Integer, List
+from sqlalchemy.sql.sqltypes import DateTime, Integer
 
 from rezai.db.base import Base
 
@@ -18,10 +18,7 @@ class GroupRestaurant(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     group_id: Mapped[int] = mapped_column(Integer, nullable=False)
-    restaurant_id: Mapped[int] = mapped_column(
-        ForeignKey("restaurants.id"),
-        nullable=False,
-    )
+
     created_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
@@ -30,11 +27,13 @@ class GroupRestaurant(Base):
         DateTime(timezone=True),
         onupdate=func.now(),
     )
-
+    restaurant_id: Mapped[int] = mapped_column(
+        ForeignKey("restaurants.id"),
+        nullable=False,
+    )
     restaurant: Mapped["Restaurant"] = relationship(  # noqa: F821
         "Restaurant",
         back_populates="group_restaurants",
-        foreign_keys=[restaurant_id],  # Specify the foreign key column
     )
     ratings: Mapped[List["GroupRestaurantRating"]] = relationship(
         "GroupRestaurantRating",

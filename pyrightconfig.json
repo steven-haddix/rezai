@@ -1,0 +1,14 @@
+{
+    "include": [
+        "rezai"
+    ],
+    "exclude": [
+        "**/__pycache__",
+        "**/migrations/versions",
+    ],
+    "executionEnvironments": [
+        {
+            "root": "rezai"
+        }
+    ]
+}
